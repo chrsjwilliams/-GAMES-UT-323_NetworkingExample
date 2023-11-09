@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -7,6 +8,7 @@ namespace GAMES_UT323.Networking
 {
     public class UnityAuthentication : MonoBehaviour
     {
+        public static Action UnityAuthCompleted;
         // We can only authenticate AFTER UnityServices has been initialized.
         // In this example Unity Services is initialized in Services.cs in Start()
         void Awake()
@@ -36,6 +38,7 @@ namespace GAMES_UT323.Networking
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 Debug.Log("<color=cyan>[Unity Auth] Successfuly signed in!</color>");
                 Debug.Log($"<color=cyan>[Unity Auth] PlayerID: {AuthenticationService.Instance.PlayerId}</color>");
+                UnityAuthCompleted?.Invoke();
 
             }
             catch (AuthenticationException e)

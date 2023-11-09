@@ -86,8 +86,9 @@ public class NetworkPlayer : NetworkBehaviour, IDraggable3D
     //  is dynamically spawned.
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) return;
         playerColor.OnValueChanged += OnValueChanged;
+
+        if (!IsOwner) return;
         playerColor.Value = UnityEngine.Random.ColorHSV(0.25f, 1f, 0.25f, 1f, 0.25f, 1f);
         GetComponent<MeshRenderer>().material.color = playerColor.Value;
         PlayerSpawned?.Invoke();
@@ -95,8 +96,9 @@ public class NetworkPlayer : NetworkBehaviour, IDraggable3D
 
     public override void OnNetworkDespawn()
     {
-        if (!IsOwner) return;
         playerColor.OnValueChanged -= OnValueChanged;
+
+        if (!IsOwner) return;
         base.OnNetworkDespawn();
     }
 

@@ -138,7 +138,6 @@ public class LobbyManager : MonoBehaviour
             });
 
             _joinedLobby = _hostLobby;
-            ListPlayers(_hostLobby);
         }
         catch (LobbyServiceException ex)
         {
@@ -150,7 +149,6 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            
             await LobbyService.Instance.RemovePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId);
             _hostLobby = null;
             _joinedLobby = null;
@@ -187,45 +185,6 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    private void ListPlayers()
-    {
-        ListPlayers(_joinedLobby);
-    }
-
-    private void ListPlayers(Lobby lobby)
-    {
-        Debug.Log("Players in Lobby " + lobby.Name + "| Game Mode: " + lobby.Data[KEY_GAME_MODE].Value);
-        foreach (Player player in lobby.Players)
-        {
-            Debug.Log(player.Data[KEY_PLAYER_NAME].Value);
-        }
-    }
-
-    private async void UpdateLobbyGameMode(string gameMode)
-    {
-        try
-        {
-            if (_hostLobby == null) return;
-
-            _hostLobby = await Lobbies.Instance.UpdateLobbyAsync(_hostLobby.Id, new UpdateLobbyOptions
-            {
-                Data = new Dictionary<string, DataObject>
-                {
-                    {
-                        KEY_GAME_MODE, new DataObject(DataObject.VisibilityOptions.Public, gameMode)
-                    }
-                }
-            });
-
-            _joinedLobby = _hostLobby;
-            ListPlayers(_hostLobby);
-        }
-        catch (LobbyServiceException ex)
-        {
-            Debug.Log(ex);
-        }
-    }
-
     private Player GetPlayer()
     {
         return new Player
@@ -237,28 +196,6 @@ public class LobbyManager : MonoBehaviour
                 }
             }
         };
-    }
-
-    private async void UpdatePlayerName(string newPlayerName)
-    {
-        try
-        {
-            playerName = newPlayerName;
-            await LobbyService.Instance.UpdatePlayerAsync(_joinedLobby.Id, AuthenticationService.Instance.PlayerId, new UpdatePlayerOptions
-            {
-                Data = new Dictionary<string, PlayerDataObject>
-            {
-
-                {
-                    KEY_PLAYER_NAME, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Public, playerName)
-                }
-            }
-            });
-        }
-        catch (LobbyServiceException ex)
-        {
-            Debug.Log(ex);
-        }
     }
 
     public async void PollLobbyForUpdates()
