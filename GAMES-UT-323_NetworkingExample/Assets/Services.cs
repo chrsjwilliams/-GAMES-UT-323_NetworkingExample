@@ -10,6 +10,7 @@ using GAMES_UT323.Networking;
 /// that need to be globally accessible. It's a good idea to put all
 /// classes that would be singletons here.
 /// </summary>
+[DefaultExecutionOrder(-1000)]
 public class Services : MonoBehaviour
 {
     public static Action UnityServiceInitalized;
@@ -28,8 +29,8 @@ public class Services : MonoBehaviour
     }
     private static Services _instance;
 
-    [SerializeField] private MatchmakingService _matchmakingService;
-    public static MatchmakingService MatchmakingService { get { return checkedInstance._matchmakingService; } }
+    [SerializeField] private LobbyManager _lobbyManager;
+    public static LobbyManager LobbyManager { get { return checkedInstance._lobbyManager; } }
 
     private void Awake()
     {
