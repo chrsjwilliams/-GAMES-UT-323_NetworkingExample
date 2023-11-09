@@ -1335,7 +1335,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameScreenUI: {fileID: 867199377}
   lobbyName: {fileID: 1652767831}
-  playerCount: {fileID: 1500108497}
 --- !u!1 &916825204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2270,7 +2269,6 @@ RectTransform:
   - {fileID: 1539989004}
   - {fileID: 1733279243}
   - {fileID: 365107860}
-  - {fileID: 1500108496}
   m_Father: {fileID: 1372636690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2634,6 +2632,7 @@ RectTransform:
   - {fileID: 1146071918}
   - {fileID: 867199376}
   - {fileID: 1214870680}
+  - {fileID: 1500108496}
   - {fileID: 660424069}
   - {fileID: 1503072262}
   m_Father: {fileID: 0}
@@ -2770,7 +2769,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1214870680}
+  m_Father: {fileID: 1372636690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -2797,7 +2796,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lobby List
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -13,7 +13,8 @@ public class LobbyManager : MonoBehaviour
 
     public static Action<Lobby> LobbyCreated;
     public static Action<string> StartingGame;
-    public static Action JoinedLobby;
+    public static Action<Lobby> JoinedLobby;
+    public static Action<Lobby> LobbyUpdated;
     public static Action LeftLobby;
     public static Action LeftGame;
 
@@ -103,7 +104,7 @@ public class LobbyManager : MonoBehaviour
             };
             Lobby lobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId, lobbyOptions);
             _joinedLobby = lobby;
-            JoinedLobby?.Invoke();
+            JoinedLobby?.Invoke(_joinedLobby);
         }
         catch (LobbyServiceException ex)
         {
@@ -260,7 +261,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    private async void PollLobbyForUpdates()
+    public async void PollLobbyForUpdates()
     {
         if (_joinedLobby == null) return;
 
@@ -271,6 +272,7 @@ public class LobbyManager : MonoBehaviour
             lobbyUpdateTimer = lobbyUpdateTimerMax;
             Lobby lobby = await LobbyService.Instance.GetLobbyAsync(_joinedLobby.Id);
             _joinedLobby = lobby;
+            LobbyUpdated?.Invoke(_joinedLobby);
         }
 
         if (_joinedLobby.Data[KEY_GAME_CODE].Value != "0")
@@ -282,6 +284,7 @@ public class LobbyManager : MonoBehaviour
             }
 
             _joinedLobby = null;
+            LobbyUpdated?.Invoke(_joinedLobby);
         }
     }
 

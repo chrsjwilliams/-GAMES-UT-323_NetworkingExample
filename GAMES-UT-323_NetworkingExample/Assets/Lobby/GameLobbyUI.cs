@@ -20,7 +20,7 @@ public class GameLobbyUI : MonoBehaviour
     [SerializeField] CanvasGroup lobbyButtons;
     private List<LobbyUIButtion> _activeLobbies = new List<LobbyUIButtion>();
 
-
+    Lobby currentLobby;
     bool joinedLobby = false;
 
     // Start is called before the first frame update
@@ -38,6 +38,7 @@ public class GameLobbyUI : MonoBehaviour
         LobbyManager.JoinedLobby += OnJoinedLobby;
         LobbyManager.LeftLobby += OnLeft;
         LobbyManager.LeftGame += OnLeft;
+        LobbyManager.LobbyUpdated += OnLobbyUpdated;
         NetworkPlayer.PlayerSpawned += OnPlayerSpawned;
 
     }
@@ -50,8 +51,14 @@ public class GameLobbyUI : MonoBehaviour
         LobbyManager.JoinedLobby -= OnJoinedLobby;
         LobbyManager.LeftLobby -= OnLeft;
         LobbyManager.LeftGame -= OnLeft;
+        LobbyManager.LobbyUpdated -= OnLobbyUpdated;
         NetworkPlayer.PlayerSpawned -= OnPlayerSpawned;
 
+    }
+
+    private void OnLobbyUpdated(Lobby lobby)
+    {
+        currentLobby = lobby;
     }
 
     private void OnPlayerSpawned()
@@ -66,17 +73,25 @@ public class GameLobbyUI : MonoBehaviour
         joinedLobby = false;
     }
 
-    public void OnJoinedLobby()
+    public void OnJoinedLobby(Lobby lobby)
     {
+        currentLobby = lobby;
         leaveLobbyButton.alpha = 1;
         leaveLobbyButton.interactable = true;
         leaveLobbyButton.blocksRaycasts = true;
-        joinedLobby = true;
+
+        lobbyListUI.alpha = 0;
+        lobbyListUI.blocksRaycasts = false;
+        lobbyListUI.interactable = false;
+
+        lobbyButtons.alpha = 0;
+        lobbyButtons.interactable = false;
+        lobbyButtons.blocksRaycasts = false;
     }
 
     public void OnLobbyCreated(Lobby lobby)
     {
-        joinedLobby = true;
+        currentLobby = lobby;
 
         startGameButton.alpha = 1;
         startGameButton.interactable = true;
@@ -98,6 +113,8 @@ public class GameLobbyUI : MonoBehaviour
 
     private void OnLeft()
     {
+        playerCount.text = "";
+
         lobbyListUI.alpha = 1;
         lobbyListUI.blocksRaycasts = true;
         lobbyListUI.interactable = true;
@@ -105,6 +122,14 @@ public class GameLobbyUI : MonoBehaviour
         lobbyButtons.alpha = 1;
         lobbyButtons.interactable = true;
         lobbyButtons.blocksRaycasts = true;
+
+        startGameButton.alpha = 0;
+        startGameButton.interactable = false;
+        startGameButton.blocksRaycasts = false;
+
+        leaveLobbyButton.alpha = 0;
+        leaveLobbyButton.interactable = false;
+        leaveLobbyButton.blocksRaycasts = false;
     }
 
     private void Start()
@@ -149,8 +174,8 @@ public class GameLobbyUI : MonoBehaviour
 
     private void Update()
     {
-        if (!joinedLobby) return;
+        if (currentLobby == null) return;
 
-        playerCount.text = "Players: " + Services.LobbyManager.CurrentLobby.Players.Count + " / " + Services.LobbyManager.CurrentLobby.MaxPlayers;
+        playerCount.text = "Players: " + currentLobby.Players.Count + " / " + currentLobby.MaxPlayers;
     }
 }
