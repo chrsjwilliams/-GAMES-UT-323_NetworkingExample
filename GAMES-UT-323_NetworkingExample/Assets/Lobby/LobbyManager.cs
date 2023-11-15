@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
-using Unity.Netcode;
 using UnityEngine;
 
 
@@ -53,6 +53,7 @@ public class LobbyManager : MonoBehaviour
                     { KEY_GAME_CODE, new DataObject(DataObject.VisibilityOptions.Member, "0") }
                 }
             };
+
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, lobbyOptions);
             _hostLobby = lobby;
             _joinedLobby = _hostLobby;
@@ -90,11 +91,11 @@ public class LobbyManager : MonoBehaviour
 
     public void JoinLobby(Lobby lobby)
     {
-        JoinLobbyByCode(lobby.Id);
+        JoinLobbyById(lobby.Id);
     }
 
 
-    private async void JoinLobbyByCode(string lobbyId)
+    private async void JoinLobbyById(string lobbyId)
     {
         try
         {
@@ -118,7 +119,6 @@ public class LobbyManager : MonoBehaviour
         {
             Lobby lobby = await Lobbies.Instance.QuickJoinLobbyAsync();
             _joinedLobby = lobby;
-            NetworkManager.Singleton.StartClient();
         }
         catch (LobbyServiceException ex)
         {

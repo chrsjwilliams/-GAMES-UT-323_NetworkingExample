@@ -23,7 +23,7 @@ public class LobbyUIButtion : MonoBehaviour
     private void OnUpdateLobbyInfo(Lobby lobby)
     {
         lobbyName.text = lobby.Name;
-        gameMode.text = lobby.Data[GameLobby.GAME_MODE_KEY].Value;
+        gameMode.text = lobby.Data[LobbyManager.KEY_GAME_MODE].Value;
         playerCount.text = lobby.Players.Count + " / " + lobby.MaxPlayers;
 
     }
